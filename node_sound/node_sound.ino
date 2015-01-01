@@ -103,3 +103,18 @@ void runCommand() {
   }
 }
 
+byte readEEPROM(int deviceaddress, unsigned int eeaddress)
+{
+  byte rdata = 0xFF;
+  TinyWireM.beginTransmission(deviceaddress);
+  TinyWireM.send((int)(eeaddress >> 8));
+  TinyWireM.send((int)(eeaddress & 0xFF));
+  TinyWireM.endTransmission();
+  TinyWireM.requestFrom(deviceaddress,1);
+  if (TinyWireM.available())
+  {
+    rdata = TinyWireM.receive();
+  }
+  return rdata;
+}
+
