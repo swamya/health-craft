@@ -15,9 +15,9 @@
 const byte NODE_ID = 1;
 SoftwareSerialXT TinySerial(2);
 SimplePacket ET;
-const byte red_pin = 1;
-const byte green_pin = 4;
-const byte blue_pin = 0;
+const byte red_pin = 0;
+const byte green_pin = 1;
+const byte blue_pin = 4;
 
 struct RECEIVE_DATA_STRUCTURE {
   uint8_t node_ID;
@@ -38,7 +38,7 @@ void setup()
   pinMode(red_pin, OUTPUT);
   pinMode(green_pin, OUTPUT);
   pinMode(blue_pin, OUTPUT);
-  
+
   default_flag = 1;
 }
 
@@ -66,37 +66,37 @@ void runCommand() {
   switch (myData.command) {
     case 0: //off
       {
-        setRGB(0,0,0);
+        setRGB(0, 0, 0);
         break;
       }
     case 1: //red
       {
-        setRGB(255,0,0);
+        setRGB(255, 0, 0);
         break;
       }
     case 2:
       {
-        setRGB(255,85,0);
+        setRGB(255, 85, 0);
         break;
       }
     case 3:
       {
-        setRGB(255,170,0);
+        setRGB(255, 170, 0);
         break;
       }
     case 4: //yellow
       {
-        setRGB(255,255,0);
+        setRGB(255, 255, 0);
         break;
       }
     case 5:
       {
-        setRGB(170,255,0);
+        setRGB(170, 255, 0);
         break;
       }
     case 6:
       {
-        setRGB(85,255,0);
+        setRGB(85, 255, 0);
         break;
       }
     case 7: //green
@@ -109,34 +109,13 @@ void runCommand() {
         byte red = 255;
         byte green = 0;
         byte blue = 0;
-        
-        setRGB(red,green,blue);
-        delay(30);
-        
-        for (byte i = 0; i < 255; i++){ //red to yellow
-           green += 1;
-           setRGB(red, green, blue);
-           delay(30); 
-        }
-        for (byte i = 0; i < 255; i++){ //yellow to green
-           red -= 1;
-           setRGB(red, green, blue);
-           delay(30); 
-        }
-        
-        delay(30);
-        
-        for (byte i = 0; i < 255; i++){ //green  to yellow
-           red += 1;
-           setRGB(red, green, blue);
-           delay(30); 
-        }
-        for (byte i = 0; i < 255; i++){ //yellow to red
-           green -= 1;
-           setRGB(red, green, blue);
-           delay(30); 
-        }
-        
+
+        redtoyellow(red, green, blue);
+        yellowtogreen(red, green, blue);
+        greentocyan(red, green, blue);
+        cyantoblue(red, green, blue);
+        bluetomagenta(red, green, blue);
+        magentatored(red, green, blue);
         break;
       }
     default:
@@ -144,8 +123,70 @@ void runCommand() {
 
   }
 }
-void setRGB(byte red, byte green, byte blue){
-   analogWrite(red_pin, red);
-   analogWrite(green_pin, green);
-   analogWrite(blue_pin, blue);
+void setRGB(byte red, byte green, byte blue) {
+  analogWrite(red_pin, red);
+  analogWrite(green_pin, green);
+  analogWrite(blue_pin, blue);
+}
+void redtoyellow(byte &red, byte &green, byte &blue) {
+
+  setRGB(red, green, blue);
+  delay(30);
+
+  for (byte i = 0; i < 255; i++) { //red to yellow
+    green += 1;
+    setRGB(red, green, blue);
+    delay(30);
+  }
+}
+void yellowtogreen(byte &red, byte &green, byte &blue) {
+
+  setRGB(red, green, blue);
+  delay(30);
+
+  for (byte i = 0; i < 255; i++) { //yellow to green
+    red -= 1;
+    setRGB(red, green, blue);
+    delay(30);
+  }
+}
+void greentocyan(byte &red, byte &green, byte &blue) {
+  setRGB(red, green, blue);
+  delay(30);
+
+  for (byte i = 0; i < 255; i++) {
+    blue += 1;
+    setRGB(red, green, blue);
+    delay(30);
+  }
+}
+void cyantoblue(byte &red, byte &green, byte &blue) {
+  setRGB(red, green, blue);
+  delay(30);
+
+  for (byte i = 0; i < 255; i++) {
+    green -= 1;
+    setRGB(red, green, blue);
+    delay(30);
+  }
+}
+void bluetomagenta(byte &red, byte &green, byte &blue) {
+  setRGB(red, green, blue);
+  delay(30);
+
+  for (byte i = 0; i < 255; i++) {
+    red += 1;
+    setRGB(red, green, blue);
+    delay(30);
+  }
+}
+void magentatored(byte &red, byte &green, byte &blue) {
+  setRGB(red, green, blue);
+  delay(30);
+
+  for (byte i = 0; i < 255; i++) {
+    blue -= 1;
+    setRGB(red, green, blue);
+    delay(30);
+  }
 }
