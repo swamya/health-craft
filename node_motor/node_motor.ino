@@ -12,10 +12,10 @@
 #include <TinyDebugKnockBang.h>
 #endif
 
-const byte NODE_ID = 3;
+const byte NODE_ID = 1;
 SoftwareSerialXT TinySerial(2);
 SimplePacket ET;
-const byte motor_pin = 1;
+const byte motor_pin = 0;
 
 struct RECEIVE_DATA_STRUCTURE {
   uint8_t node_ID;
